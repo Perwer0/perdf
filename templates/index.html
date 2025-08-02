@@ -10,6 +10,7 @@
     <div class="header">
         <img src="{{ url_for('static', filename='LOGO.png') }}" alt="PDF Logo" style="width: 150px; height: auto;">
         <p>PDF işlemlerinde kendi yolunuzu seçin.</p>
+<button id="theme-toggle" class="theme-toggle-button">🌙 Tema Değiştir</button>
     </div>
 
     <div class="actions">
@@ -22,5 +23,21 @@
     <div class="footer">
         &copy; 2025 PerDF | Perver AKA Tarafından oluşturuldu | Tüm hakları saklıdır.
     </div>
+<script>
+    const toggleButton = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme === 'dark') {
+        document.body.classList.add('dark');
+        toggleButton.textContent = '☀️ Tema Değiştir';
+    }
+
+    toggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const theme = document.body.classList.contains('dark') ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+        toggleButton.textContent = theme === 'dark' ? '☀️ Tema Değiştir' : '🌙 Tema Değiştir';
+    });
+</script>
 </body>
 </html>
