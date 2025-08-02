@@ -1,75 +1,34 @@
-**templates/index.html**
-
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>PerDF | PDF Araçları</title>
+    <title>PerDF - PDF Araçları</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>PerDF - PDF Araçları</h1>
-    <ul>
-        <li><a href="/merge">PDF Birleştir</a></li>
-        <li><a href="/split">PDF Böl</a></li>
-        <li><a href="/pdf_to_image">PDF → Görsel</a></li>
-        <li><a href="/image_to_pdf">Görsel → PDF</a></li>
-    </ul>
+    <header>
+        <h1>📄 PerDF</h1>
+        <p>PDF İşlemlerinde Kendi Yolun</p>
+        <nav>
+            <a href="/merge">PDF Birleştir</a>
+            <a href="/split">PDF Böl</a>
+            <a href="/pdf_to_image">PDF → Görsel</a>
+            <a href="/image_to_pdf">Görsel → PDF</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>PDF Araçları</h2>
+        <ul>
+            <li><a href="/merge">📎 PDF Birleştir</a></li>
+            <li><a href="/split">✂️ PDF Böl</a></li>
+            <li><a href="/pdf_to_image">📄 PDF → Görsel</a></li>
+            <li><a href="/image_to_pdf">🖼️ Görsel → PDF</a></li>
+        </ul>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PerDF | Tüm hakları saklıdır.</p>
+    </footer>
 </body>
 </html>
-```
-
----
-
-**templates/merge.html**
-
-```html
-<h2>PDF Birleştir</h2>
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="pdfs" multiple required>
-    <button type="submit">PDF'leri Birleştir</button>
-</form>
-<a href="/">Anasayfa</a>
-```
-
----
-
-**templates/split.html**
-
-```html
-<h2>PDF Sayfa Böl</h2>
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="pdf" required>
-    <input type="number" name="start" placeholder="Başlangıç Sayfa" required>
-    <input type="number" name="end" placeholder="Bitiş Sayfa" required>
-    <button type="submit">PDF'yi Böl</button>
-</form>
-<a href="/">Anasayfa</a>
-```
-
----
-
-**templates/pdf_to_image.html**
-
-```html
-<h2>PDF → Görsel</h2>
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="pdf" required>
-    <button type="submit">Sayfaları Görsellere Ayır</button>
-</form>
-<a href="/">Anasayfa</a>
-```
-
----
-
-**templates/image_to_pdf.html**
-
-```html
-<h2>Görsel → PDF</h2>
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="images" multiple required>
-    <button type="submit">PDF Oluştur</button>
-</form>
-<a href="/">Anasayfa</a>
-```
-
