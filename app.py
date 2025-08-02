@@ -1,19 +1,17 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for
 from werkzeug.utils import secure_filename
-from fpdf import FPDF
+from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 from PIL import Image
-import fitz  # PyMuPDF
 import os
 import io
+import fitz  # PyMuPDF
 import uuid
 from zipfile import ZipFile
 
-# Uygulama başlat
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['OUTPUT_FOLDER'] = 'outputs'
 
-# Klasörler yoksa oluştur
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
 
@@ -21,34 +19,77 @@ os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
 def home():
     return render_template('index.html')
 
-@app.route('/image_to_pdf', methods=['GET', 'POST'])
+@app.route('/merge', methods=['GET', 'POST'])
+def merge_pdfs():
+    if request.method == 'POST':
+        files = request.files.getlist('pdfs')
+        merger = PdfMerger()
+
+        for file in files:
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+            file.save(filepath)
+            merger.append(filepath)
+
+        output_filename = f"merged_{uuid.uuid4().hex}.pdf"
+        output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
+        merger.write(output_path)
+        merger.close()
+
+        return send_file(output_path, as_attachment=True)
+
+    return render_template('merge.html')
+
+@app.route('/split', methods=['GET', 'POST'])
+def split_pdf():
+    if request.method == 'POST':
+        file = request.files['pdf_file']
+        start = int(request.form['start_page'])
+        end = int(request.form['end_page'])
+
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        reader = PdfReader(filepath)
+        writer = PdfWriter()
+
+        for i in range(start - 1, end):
+            writer.add_page(reader.pages[i])
+
+        output_filename = f"split_{uuid.uuid4().hex}.pdf"
+        output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
+        with open(output_path, 'wb') as out:
+            writer.write(out)
+
+        return send_file(output_path, as_attachment=True)
+
+    return render_template('split.html')
+
+@app.route('/image-to-pdf', methods=['GET', 'POST'])
 def image_to_pdf():
     if request.method == 'POST':
         images = request.files.getlist('images')
-        if not images or len(images) == 0:
-            return 'No images uploaded.', 400
+        pdf = fitz.open()
 
-        pdf = FPDF()
         for img in images:
             img_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(img.filename))
             img.save(img_path)
+            img_doc = fitz.open(img_path)
+            rect = img_doc[0].rect
+            pdfbytes = img_doc.convert_to_pdf()
+            img_pdf = fitz.open("pdf", pdfbytes)
+            pdf.insert_pdf(img_pdf)
 
-            image = Image.open(img_path)
-            width, height = image.size
-            width_mm = width * 0.264583
-            height_mm = height * 0.264583
-
-            pdf.add_page()
-            pdf.image(img_path, 0, 0, width_mm, height_mm)
-
-        output_filename = f"{uuid.uuid4().hex}.pdf"
+        output_filename = f"image2pdf_{uuid.uuid4().hex}.pdf"
         output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
-        pdf.output(output_path)
+        pdf.save(output_path)
+        pdf.close()
+
         return send_file(output_path, as_attachment=True)
 
     return render_template('image_to_pdf.html')
 
-@app.route('/pdf_to_image', methods=['GET', 'POST'])
+@app.route('/pdf-to-image', methods=['GET', 'POST'])
 def pdf_to_image():
     if request.method == 'POST':
         pdf_file = request.files.get('pdf')
@@ -60,6 +101,7 @@ def pdf_to_image():
 
         doc = fitz.open(pdf_path)
         zip_buffer = io.BytesIO()
+
         with ZipFile(zip_buffer, 'a') as zipf:
             for i, page in enumerate(doc):
                 pix = page.get_pixmap()
@@ -72,5 +114,5 @@ def pdf_to_image():
     return render_template('pdf_to_image.html')
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Render için gereklidir
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
