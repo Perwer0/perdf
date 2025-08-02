@@ -1,40 +1,34 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for
 from werkzeug.utils import secure_filename
-import os
-from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 from fpdf import FPDF
 from PIL import Image
+import fitz  # PyMuPDF
+import os
+import io
+import uuid
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'output'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['OUTPUT_FOLDER'] = 'outputs'
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+# Klasörler yoksa oluştur
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
+
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
-@app.route('/merge', methods=['POST'])
-def merge_pdf():
-    files = request.files.getlist('pdfs')
-    merger = PdfMerger()
-    
-    for file in files:
-        merger.append(file)
 
-    output_path = os.path.join(app.config['UPLOAD_FOLDER'], 'merged.pdf')
-    merger.write(output_path)
-    merger.close()
+@app.route('/image_to_pdf', methods=['GET', 'POST'])
+def image_to_pdf():
+    if request.method == 'POST':
+        images = request.files.getlist('images')
+        if not images:
+            return 'No images uploaded.', 400
 
-    return send_file(output_path, as_attachment=True)
-
-@app.route('/split', methods=['POST'])
-def split_pdf():
-    file = request.files['pdf']
-    reader = PdfReader(file)
-    
-    for i, page in enumerate(reader.pages):
-        writer = PdfWriter()
-        writer.add
+        pdf = FPDF()
+        for img in images:
+            img_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(img.filename))
+            img.save(img_pat_
