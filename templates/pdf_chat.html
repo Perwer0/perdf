@@ -1,0 +1,86 @@
+<!-- templates/pdf_chat.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>PerDF - PDF Soru-Cevap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="file"], input[type="text"], button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #004d99;
+        }
+        .answer {
+            background: #e0ffe0;
+            border-left: 4px solid green;
+            padding: 10px;
+            margin-top: 20px;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2><i class="fa-solid fa-file-pdf"></i> PDF Soru-Cevap Sistemi</h2>
+
+    {% if not pdf_uploaded %}
+        <form method="POST" action="/upload_pdf_chat" enctype="multipart/form-data">
+            <input type="file" name="pdf_file" accept="application/pdf" required>
+            <button type="submit">PDF Yükle</button>
+        </form>
+    {% else %}
+        <iframe src="/static/uploads/{{ filename }}"></iframe>
+        <form method="POST" action="/ask_pdf_question">
+            <input type="hidden" name="filename" value="{{ filename }}">
+            <input type="text" name="question" placeholder="PDF hakkında soru sorun..." required>
+            <button type="submit">Sor</button>
+        </form>
+
+        {% if answer %}
+            <div class="answer">
+                <strong>Cevap:</strong><br>
+                {{ answer }}
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+</body>
+</html>

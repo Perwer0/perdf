@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for
 from werkzeug.utils import secure_filename
 from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 from PIL import Image
@@ -7,6 +7,7 @@ import os
 import io
 import uuid
 from zipfile import ZipFile
+from utils import get_relevant_answer  # PDF Chat AI fonksiyonu burada olacak
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -85,6 +86,31 @@ def image_to_pdf():
         return send_file(output_path, as_attachment=True)
     return render_template('image_to_pdf.html')
 
+# PDF Chat 
+@app.route('/pdf_chat', methods=['GET'])
+def pdf_chat():
+    return render_template('pdf_chat.html', pdf_uploaded=False)
+
+@app.route('/upload_pdf_chat', methods=['POST'])
+def upload_pdf_chat():
+    file = request.files['pdf_file']
+    if file:
+        filename = file.filename
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        return render_template('pdf_chat.html', pdf_uploaded=True, filename=filename)
+    return redirect(url_for('pdf_chat'))
+
+@app.route('/ask_pdf_question', methods=['POST'])
+def ask_pdf_question():
+    filename = request.form['filename']
+    question = request.form['question']
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    answer = get_relevant_answer(filepath, question)
+    return render_template('pdf_chat.html', pdf_uploaded=True, filename=filename, answer=answer)
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
+from utils import get_relevant_answer
