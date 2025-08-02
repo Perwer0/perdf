@@ -67,3 +67,14 @@ body {
     color: #999;
     font-size: 14px;
 }
+.logo {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}
+.logo:hover {
+    transform: scale(1.1) rotate(3deg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
