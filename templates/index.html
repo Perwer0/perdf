@@ -2,33 +2,26 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>PerDF - PDF Araçları</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerDF | PDF Araçları</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <header>
-        <h1>📄 PerDF</h1>
-        <p>PDF İşlemlerinde Kendi Yolun</p>
-        <nav>
-            <a href="/merge">PDF Birleştir</a>
-            <a href="/split">PDF Böl</a>
-            <a href="/pdf_to_image">PDF → Görsel</a>
-            <a href="/image_to_pdf">Görsel → PDF</a>
-        </nav>
-    </header>
+    <div class="header">
+        <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="PDF Logo">
+        <h1>PerDF</h1>
+        <p>PDF işlemlerinde kendi yolunuzu seçin.</p>
+    </div>
 
-    <main>
-        <h2>PDF Araçları</h2>
-        <ul>
-            <li><a href="/merge">📎 PDF Birleştir</a></li>
-            <li><a href="/split">✂️ PDF Böl</a></li>
-            <li><a href="/pdf_to_image">📄 PDF → Görsel</a></li>
-            <li><a href="/image_to_pdf">🖼️ Görsel → PDF</a></li>
-        </ul>
-    </main>
+    <div class="actions">
+        <a href="/merge" class="action-button">✍️ PDF Birleştir</a>
+        <a href="/split" class="action-button">📁 PDF Böl</a>
+        <a href="/pdf_to_image" class="action-button">🖼️ PDF → Görsel</a>
+        <a href="/image_to_pdf" class="action-button">📄 Görsel → PDF</a>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 PerDF | Tüm hakları saklıdır.</p>
-    </footer>
+    <div class="footer">
+        &copy; 2025 PerDF | Tüm hakları saklıdır.
+    </div>
 </body>
 </html>

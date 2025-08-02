@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Birleştir | PerDF</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <a href="/" style="text-decoration: none;"><h1>PerDF</h1></a>
+        <p>Birden fazla PDF dosyasını tek dosyada birleştirin.</p>
+    </div>
+
+    <main class="content">
+        <h2>PDF Dosyalarınızı Yükleyin</h2>
+        <form action="/merge" method="post" enctype="multipart/form-data">
+            <input type="file" name="pdfs" multiple required accept="application/pdf">
+            <button type="submit" class="action-button">Birleştir</button>
+        </form>
+        <p style="margin-top: 20px; font-size: 14px; color: #777;">Tüm işlemler tarayıcınızda güvenle gerçekleştirilir.</p>
+    </main>
+
+    <div class="footer">
+        &copy; 2025 PerDF | PDF birleştirme aracı
+    </div>
+</body>
+</html>
