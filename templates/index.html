@@ -1,27 +1,32 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PerDF | PDF Araçları</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <h1><img src="{{ url_for('static', filename='pdf-icon.png') }}" alt="PDF Logo" style="height:40px;"> PerDF</h1>
-    <p>PDF işlemlerinde kendi yolunuzu seçin.</p>
 
-    <div class="button-group">
-        <a href="/merge" class="btn">📎 PDF Birleştir</a>
-        <a href="/split" class="btn">📁 PDF Böl</a>
-        <a href="/pdf_to_image" class="btn">🖼️ PDF → Görsel</a>
-        <a href="/image_to_pdf" class="btn">📄 Görsel → PDF</a>
-        <a href="/pdf_chat" class="btn special">🤖 PDF'ten Soru Sor</a>
+    <!-- Başlık Alanı -->
+    <div class="header">
+        <h1>📄 PerDF</h1>
+        <p>PDF işlemlerinde kendi yolunuzu seçin</p>
     </div>
 
-    <footer>
-        <p>© 2025 PerDF | Perwer AKA Tarafından oluşturuldu | Tüm hakları saklıdır.</p>
-    </footer>
-</div>
+    <!-- Butonlar -->
+    <div class="actions">
+        <a href="/pdf_merge" class="action-button">📎 PDF Birleştir</a>
+        <a href="/pdf_split" class="action-button">📂 PDF Böl</a>
+        <a href="/pdf_to_image" class="action-button">🖼️ PDF → Görsel</a>
+        <a href="/image_to_pdf" class="action-button">📑 Görsel → PDF</a>
+        <a href="/upload_pdf_chat" class="action-button">🤖 PDF'ten Soru Sor</a>
+    </div>
+
+    <!-- Altbilgi -->
+    <div class="footer">
+        © 2025 <strong>PerDF</strong> | Perwer AKA tarafından oluşturuldu. Tüm hakları saklıdır.
+    </div>
+
 </body>
 </html>
