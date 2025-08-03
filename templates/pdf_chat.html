@@ -67,7 +67,7 @@
             <button type="submit">PDF Yükle</button>
         </form>
     {% else %}
-        <iframe src="/static/uploads/{{ filename }}"></iframe>
+        <iframe src="{{ url_for('static', filename=filename) }}"></iframe>
         <form method="POST" action="/ask_pdf_question">
             <input type="hidden" name="filename" value="{{ filename }}">
             <input type="text" name="question" placeholder="PDF hakkında soru sorun..." required>

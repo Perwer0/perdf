@@ -9,7 +9,7 @@ import uuid
 from zipfile import ZipFile
 from utils import get_relevant_answer  # Yapay zekâya soru-cevap için
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='uploads')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
