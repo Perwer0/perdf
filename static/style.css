@@ -107,3 +107,16 @@ body.dark .theme-toggle-button {
     background-color: #333;
     color: white;
 }
+
+body.dark .action-button {
+    background-color: #444;
+}
+
+body.dark .footer {
+    color: #ccc;
+}
+
+body.dark .header p {
+    color: #aaa;
+}
+

@@ -1,48 +1,27 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PerDF | PDF Araçları</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="header">
-        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="PDF Logo" style="width: 150px; height: auto;">
-        <p>PDF işlemlerinde kendi yolunuzu seçin.</p>
-<button id="theme-toggle" class="theme-toggle-button">🌙 Tema Değiştir</button>
+<div class="container">
+    <h1><img src="{{ url_for('static', filename='pdf-icon.png') }}" alt="PDF Logo" style="height:40px;"> PerDF</h1>
+    <p>PDF işlemlerinde kendi yolunuzu seçin.</p>
+
+    <div class="button-group">
+        <a href="/merge" class="btn">📎 PDF Birleştir</a>
+        <a href="/split" class="btn">📁 PDF Böl</a>
+        <a href="/pdf_to_image" class="btn">🖼️ PDF → Görsel</a>
+        <a href="/image_to_pdf" class="btn">📄 Görsel → PDF</a>
+        <a href="/pdf_chat" class="btn special">🤖 PDF'ten Soru Sor</a>
     </div>
 
-    <div class="actions">
-<a href="/pdf_chat" style="text-decoration: none;">
-  <button style="background-color: #7c3aed; color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 18px; display: flex; align-items: center; gap: 10px;">
-    🤖 PDF'ten Soru Sor
-  </button>
-</a>
-        <a href="/merge" class="action-button">✍️ PDF Birleştir</a>
-        <a href="/split" class="action-button">📁 PDF Böl</a>
-        <a href="/pdf_to_image" class="action-button">🖼️ PDF → Görsel</a>
-        <a href="/image_to_pdf" class="action-button">📄 Görsel → PDF</a>
-    </div>
-
-    <div class="footer">
-        &copy; 2025 PerDF | Perver AKA Tarafından oluşturuldu | Tüm hakları saklıdır.
-    </div>
-<script>
-    const toggleButton = document.getElementById('theme-toggle');
-    const currentTheme = localStorage.getItem('theme');
-
-    if (currentTheme === 'dark') {
-        document.body.classList.add('dark');
-        toggleButton.textContent = '☀️ Tema Değiştir';
-    }
-
-    toggleButton.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        const theme = document.body.classList.contains('dark') ? 'dark' : 'light';
-        localStorage.setItem('theme', theme);
-        toggleButton.textContent = theme === 'dark' ? '☀️ Tema Değiştir' : '🌙 Tema Değiştir';
-    });
-</script>
+    <footer>
+        <p>© 2025 PerDF | Perwer AKA Tarafından oluşturuldu | Tüm hakları saklıdır.</p>
+    </footer>
+</div>
 </body>
 </html>
