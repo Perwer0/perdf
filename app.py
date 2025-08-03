@@ -58,6 +58,26 @@ def get_relevant_answer(pdf_path, question):
         start = full_text.lower().find(question.lower())
         snippet = full_text[start:start+500]
         return snippet.strip()
+@app.route('/split')
+def split():
+    return render_template('split.html')
+
+@app.route('/merge')
+def merge():
+    return render_template('merge.html')
+
+@app.route('/pdf_to_image')
+def pdf_to_image():
+    return render_template('pdf_to_image.html')
+
+@app.route('/image_to_pdf')
+def image_to_pdf():
+    return render_template('image_to_pdf.html')
+
+@app.route('/chat_pdf')
+def chat_pdf():
+    return render_template('chat_pdf.html')
+
 
     return "Bu soruya yanıt PDF içinde bulunamadı."
 
