@@ -54,6 +54,13 @@ def split():
         return send_file(output_path, as_attachment=True)
     return render_template('split.html')
 
+from flask import render_template
+
+@app.route("/chat-pdf")
+def chat_pdf():
+    return render_template("chat_pdf.html")  # dosya adı uyumlu olmalı
+
+
 @app.route('/pdf_to_image', methods=['GET', 'POST'])
 def pdf_to_image():
     if request.method == 'POST':
