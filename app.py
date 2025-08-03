@@ -7,7 +7,7 @@ import os
 import io
 import uuid
 from zipfile import ZipFile
-from utils import get_relevant_answer  # PDF Chat AI fonksiyonu burada olacak
+from utils import get_relevant_answer  # Yapay zekâya soru-cevap için
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -17,6 +17,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 def index():
     return render_template('index.html')
 
+# PDF BİRLEŞTİR
 @app.route('/merge', methods=['GET', 'POST'])
 def merge():
     if request.method == 'POST':
@@ -34,6 +35,7 @@ def merge():
         return send_file(output_path, as_attachment=True)
     return render_template('merge.html')
 
+# PDF BÖL
 @app.route('/split', methods=['GET', 'POST'])
 def split():
     if request.method == 'POST':
@@ -54,13 +56,7 @@ def split():
         return send_file(output_path, as_attachment=True)
     return render_template('split.html')
 
-from flask import render_template
-
-@app.route("/chat-pdf")
-def chat_pdf():
-    return render_template("chat_pdf.html")  # dosya adı uyumlu olmalı
-
-
+# PDF TO IMAGE
 @app.route('/pdf_to_image', methods=['GET', 'POST'])
 def pdf_to_image():
     if request.method == 'POST':
@@ -80,6 +76,7 @@ def pdf_to_image():
         return send_file(zip_buffer, download_name='images.zip', as_attachment=True)
     return render_template('pdf_to_image.html')
 
+# IMAGE TO PDF
 @app.route('/image_to_pdf', methods=['GET', 'POST'])
 def image_to_pdf():
     if request.method == 'POST':
@@ -93,7 +90,7 @@ def image_to_pdf():
         return send_file(output_path, as_attachment=True)
     return render_template('image_to_pdf.html')
 
-# PDF Chat 
+# ✅ PDF SORU-CEVAP (AI)
 @app.route('/pdf_chat', methods=['GET'])
 def pdf_chat():
     return render_template('pdf_chat.html', pdf_uploaded=False)
@@ -102,7 +99,7 @@ def pdf_chat():
 def upload_pdf_chat():
     file = request.files['pdf_file']
     if file:
-        filename = file.filename
+        filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
         return render_template('pdf_chat.html', pdf_uploaded=True, filename=filename)
@@ -119,5 +116,3 @@ def ask_pdf_question():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-from utils import get_relevant_answer
