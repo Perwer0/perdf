@@ -110,9 +110,35 @@ def ask_pdf_question():
     filename = request.form['filename']
     question = request.form['question']
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    answer = get_relevant_answer(filepath, question)
-    return render_template('pdf_chat.html', pdf_uploaded=True, filename=filename, answer=answer)
 
+    try:
+        answer = get_relevant_answer(filepath, question)
+        if not answer or answer.strip() == "":
+            answer = "Bu soruya yanıt PDF içinde bulunamadı."
+        return render_template('pdf_chat.html', pdf_uploaded=True, filename=filename, answer=answer)
+    except Exception as e:
+        return render_template('pdf_chat.html', pdf_uploaded=True, filename=filename, error=str(e))
+
+from PyPDF2 import PdfReader
+
+def get_relevant_answer(pdf_path, question):
+    reader = PdfReader(pdf_path)
+    full_text = ""
+
+    for page in reader.pages:
+        text = page.extract_text()
+        if text:
+            full_text += text + "\n"
+
+    # Basit içerik kontrolü
+    if question.lower() in full_text.lower():
+        start = full_text.lower().find(question.lower())
+        snippet = full_text[start:start+500]
+        return snippet.strip()
+
+    return ""
+
+# Flask uygulaması başlatma satırı en altta kalmalı
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

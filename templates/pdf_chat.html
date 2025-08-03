@@ -3,84 +3,93 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>PerDF - PDF Soru-Cevap</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>PDF Soru Cevap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
+            font-family: 'Inter', sans-serif;
+            background: #f4f6f8;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
         .container {
-            max-width: 900px;
-            margin: auto;
+            max-width: 700px;
+            margin: 50px auto;
             background: white;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
         }
-        h2 {
+        h1 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+        input[type="file"], input[type="text"], button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         iframe {
             width: 100%;
-            height: 500px;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        input[type="file"], input[type="text"], button {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background: #0066cc;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #004d99;
+            height: 300px;
+            border: 1px solid #eee;
+            margin-top: 20px;
         }
         .answer {
-            background: #e0ffe0;
-            border-left: 4px solid green;
-            padding: 10px;
+            background-color: #e6ffed;
+            border-left: 4px solid #28a745;
+            padding: 15px;
             margin-top: 20px;
             white-space: pre-line;
+        }
+        .error {
+            background-color: #ffe6e6;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h2><i class="fa-solid fa-file-pdf"></i> PDF Soru-Cevap Sistemi</h2>
+    <div class="container">
+        <h1>📄 PDF Soru Cevap</h1>
 
-    {% if not pdf_uploaded %}
-        <form method="POST" action="/upload_pdf_chat" enctype="multipart/form-data">
-            <input type="file" name="pdf_file" accept="application/pdf" required>
-            <button type="submit">PDF Yükle</button>
-        </form>
-    {% else %}
-        <iframe src="{{ url_for('static', filename=filename) }}"></iframe>
-        <form method="POST" action="/ask_pdf_question">
-            <input type="hidden" name="filename" value="{{ filename }}">
-            <input type="text" name="question" placeholder="PDF hakkında soru sorun..." required>
-            <button type="submit">Sor</button>
-        </form>
+        {% if not pdf_uploaded %}
+            <form method="POST" action="/upload_pdf_chat" enctype="multipart/form-data">
+                <input type="file" name="pdf_file" accept="application/pdf" required>
+                <button type="submit">PDF Yükle</button>
+            </form>
+        {% else %}
+            <iframe src="/static/uploads/{{ filename }}"></iframe>
+            <form method="POST" action="/ask_pdf_question">
+                <input type="hidden" name="filename" value="{{ filename }}">
+                <input type="text" name="question" placeholder="PDF hakkında bir soru yazın..." required>
+                <button type="submit">Sor</button>
+            </form>
 
-        {% if answer %}
-            <div class="answer">
-                <strong>Cevap:</strong><br>
-                {{ answer }}
-            </div>
+            {% if answer %}
+                <div class="answer">
+                    <strong>Cevap:</strong><br>{{ answer }}
+                </div>
+            {% elif error %}
+                <div class="error">
+                    <strong>Hata:</strong><br>{{ error }}
+                </div>
+            {% endif %}
         {% endif %}
-    {% endif %}
-</div>
+    </div>
 </body>
 </html>
