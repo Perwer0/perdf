@@ -1,0 +1,193 @@
+
+<!doctype html>
+<html lang="tr">
+<head>
+  <!-- Theme bootstrap: set dark early to avoid flash -->
+  <script data-theme-script>
+(function(){
+  try{
+    var ls=localStorage.getItem('perdf-theme');
+    var dark=(ls==='dark');
+    document.documentElement.classList.toggle('dark', dark);
+  }catch(e){}
+})();
+</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}PerDF{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind=window.tailwind||{};window.tailwind.config={darkMode:"class"};</script>
+  <script>window.tailwind=window.tailwind||{};window.tailwind.config={darkMode:"class"};</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>html{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}</style>
+
+  <style>
+    /* subtle animations */
+    @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fade-in .5s ease both; }
+    .fade-in-slow { animation: fade-in .8s ease both; }
+    .hover-float { transition: transform .2s ease, box-shadow .2s ease; }
+    .hover-float:hover { transform: translateY(-2px); }
+  </style>
+
+<style>.start-modal-card.show{opacity:1 !important; transform:scale(1) !important;}</style>
+
+  <style>
+    .glass-tile{
+      position:relative;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(255,255,255,.35);
+      border-radius:1rem;
+      padding:1rem;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .dark .glass-tile{
+      border-color:rgba(255,255,255,.12);
+      background:rgba(15,23,42,.35);
+    }
+    .glass-tile:hover{
+      transform:translateY(-4px);
+      box-shadow:0 12px 36px rgba(2,6,23,.25);
+      border-color:rgba(255,255,255,.6);
+      background:rgba(255,255,255,.5);
+    }
+    .dark .glass-tile:hover{
+      border-color:rgba(255,255,255,.2);
+      background:rgba(15,23,42,.5);
+    }
+    .icon-wrap{
+      width:40px;height:40px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg, rgba(99,102,241,.15), rgba(56,189,248,.15));
+      border:1px solid rgba(255,255,255,.35);
+    }
+    .dark .icon-wrap{ border-color:rgba(255,255,255,.12); }
+    .start-close{
+      border-radius:.6rem;padding:.4rem .6rem;color:#64748b;
+    }
+    .start-close:hover{ background:rgba(255,255,255,.5); }
+    .dark .start-close:hover{ background:rgba(15,23,42,.5); color:#cbd5e1; }
+  </style>
+
+
+  <style>
+    /* Glass Global */
+    main .bg-white{ background: rgba(255,255,255,.35) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    main .dark .bg-white, .dark main .bg-white{ background: rgba(15,23,42,.35) !important; }
+    main .border-slate-200{ border-color: rgba(255,255,255,.35) !important; }
+    .dark main .border-slate-200{ border-color: rgba(255,255,255,.12) !important; }
+    /* Buttons with white bg should stay solid */
+    a.primary, button.primary{ backdrop-filter: none !important; background: rgb(15,23,42) !important; color: #fff !important; }
+    .dark a.primary, .dark button.primary{ background: #e2e8f0 !important; color: #0f172a !important; }
+    /* Dropzone */
+    .dropzone{ background: rgba(255,255,255,.35); border: 1px dashed rgba(148,163,184,.6); }
+    .dark .dropzone{ background: rgba(15,23,42,.35); border-color: rgba(148,163,184,.4); }
+    /* Toasts already styled */
+    /* Floating badge */
+    .last-badge{ position: fixed; right: 18px; bottom: 18px; z-index: 90; padding: .6rem .85rem; border-radius: 9999px;
+      background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.5); backdrop-filter: blur(10px);
+      color:#0f172a; font-weight:600; box-shadow: 0 10px 30px rgba(2,6,23,.18); }
+    .last-badge:hover{ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(2,6,23,.28); }
+    .dark .last-badge{ background: rgba(15,23,42,.6); border-color: rgba(255,255,255,.15); color:#e2e8f0;}
+    /* Shortcut badges on tiles */
+    .kbd{ font-size:.7rem; padding:.15rem .4rem; border-radius:.4rem; border:1px solid rgba(255,255,255,.5);
+      background: rgba(255,255,255,.5); color:#0f172a; position:absolute; top:.5rem; right:.5rem; }
+    .dark .kbd{ background: rgba(15,23,42,.5); border-color: rgba(255,255,255,.2); color:#e2e8f0; }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 transition-colors">
+  <header class="sticky top-0 z-40 bg-white dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 backdrop-blur dark:bg-slate-900/80 dark:border-slate-800 transition-colors">
+    <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-200">PerDF</a>
+      <nav class="flex items-center gap-2 text-sm">
+        <a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="/merge">Birleştir</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="/split">Böl</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="/pdf_to_image">PDF→Görsel</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="/image_to_pdf">Görsel→PDF</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-slate-100" href="/pdf_chat">PDF Q&A</a>
+      </nav>
+      <button id="themeToggle" class="ml-3 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 text-sm dark:border-slate-700 dark:hover:bg-slate-800 transition">
+        🌙/☀️
+      </button>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="mx-auto max-w-2xl mt-6 px-4">
+    {% for msg in messages %}
+    <div class="mb-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3">{{ msg }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <main class="mx-auto max-w-6xl p-4">
+    {% block content %}{% endblock %}
+  
+</main>
+
+  <!-- Start Modal -->
+  <div id="startModal" class="fixed inset-0 z-[120] hidden">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm modal-bg"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="start-modal-card w-full max-w-3xl relative rounded-3xl border border-white/30 dark:border-white/10 bg-white/30 dark:bg-slate-800/30 backdrop-blur-xl shadow-[0_10px_40px_rgba(2,6,23,0.15)] opacity-0 scale-95 transition-all">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-white/30 dark:border-white/10">
+          <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-100">Hangi işlemi yapmak istersiniz?</h3>
+          <button id="startClose" class="start-close">✕</button>
+        </div>
+        <div class="p-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <a href="/merge" class="glass-tile" data-key="b"><span class="kbd">B</span>
+            <div class="icon-wrap mb-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 12h8M8 8h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="title">Birleştir</div>
+            <div class="desc">PDF’leri sıraya dizip tek dosya yapın.</div>
+          </a>
+          <a href="/split" class="glass-tile" data-key="s"><span class="kbd">S</span>
+            <div class="icon-wrap mb-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="title">Böl</div>
+            <div class="desc">Sayfa aralıklarına göre ayırın.</div>
+          </a>
+          <a href="/pdf_to_image" class="glass-tile" data-key="p"><span class="kbd">P</span>
+            <div class="icon-wrap mb-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 16l4-4 4 4 4-4 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="title">PDF → Görsel</div>
+            <div class="desc">Seçili sayfaları PNG/JPG yapın.</div>
+          </a>
+          <a href="/image_to_pdf" class="glass-tile" data-key="g"><span class="kbd">G</span>
+            <div class="icon-wrap mb-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="title">Görsel → PDF</div>
+            <div class="desc">Görsellerden tek PDF oluşturun.</div>
+          </a>
+          <a href="/pdf_chat" class="glass-tile" data-key="c"><span class="kbd">C</span>
+            <div class="icon-wrap mb-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 15a4 4 0 01-4 4H9l-4 4v-4a4 4 0 01-4-4V7a4 4 0 014-4h12a4 4 0 014 4v8z" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <div class="title">PDF Chat</div>
+            <div class="desc">Belgeye soru sorun, özet alın.</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="toast-root" class="fixed z-[100] top-4 right-4 space-y-2"></div>
+<iframe id="dl_iframe" name="dl_iframe" class="hidden"></iframe>
+<script src="https://unpkg.com/three@0.161.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.161.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://unpkg.com/three@0.161.0/examples/js/controls/OrbitControls.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}?v={{ build_ts }}"></script>
+<a id="lastUsedBadge" class="last-badge hidden" href="#">↩ Son işlem</a>
+</body>
+</html>

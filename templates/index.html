@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block title %}PerDF – PDF'lerinizi Daha Akıllı Yönetin{% endblock %}
+{% block content %}
+<!-- HERO -->
+<section class="mt-10 fade-in grid lg:grid-cols-2 gap-8 items-center">
+  <div>
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+      PDF'lerinizi <span class="text-slate-600 dark:text-slate-400 dark:text-slate-300">Daha Akıllı</span> Yönetin
+    </h1>
+    <p class="mt-4 text-slate-600 dark:text-slate-400 text-lg">
+      Birleştir, Böl, Görsele Dönüştür ve <span class="font-semibold">PDF Chat</span> ile belgenize soru sorun.
+      Hepsi hızlı, basit ve güvenli.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="#" id="startBtn" class="primary">Hemen Başla</a>
+      <a href="#features" class="rounded-xl border border-slate-200 px-4 py-2 font-medium hover:bg-slate-50">Özellikleri Keşfet</a>
+    </div>
+    <div class="mt-6 flex items-center gap-4 text-sm text-slate-500">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Dosyalar izole klasörde işlenir
+      </div>
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 8v8m-4-4h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Ücretsiz başla
+      </div>
+    </div>
+  </div>
+  <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm fade-in">
+    <div id="hero3d" class="aspect-[16/10] rounded-xl overflow-hidden">
+      <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" alt="3D Model" camera-controls auto-rotate style="width:100%;height:100%;--poster-color: transparent;"></model-viewer>
+    </div>
+    <div class="mt-3 grid grid-cols-3 gap-2 text-xs text-slate-600 dark:text-slate-400">
+      <a href="/merge" class="rounded-lg border border-slate-200 dark:border-slate-800 p-2 hover:bg-slate-50 dark:hover:bg-slate-800">Birleştir</a>
+      <a href="/split" class="rounded-lg border border-slate-200 dark:border-slate-800 p-2 hover:bg-slate-50 dark:hover:bg-slate-800">Böl</a>
+      <a href="/pdf_to_image" class="rounded-lg border border-slate-200 dark:border-slate-800 p-2 hover:bg-slate-50 dark:hover:bg-slate-800">PDF→Görsel</a>
+      <a href="/image_to_pdf" class="rounded-lg border border-slate-200 dark:border-slate-800 p-2 hover:bg-slate-50 dark:hover:bg-slate-800">Görsel→PDF</a>
+      <a href="/pdf_chat" class="rounded-lg border border-slate-200 dark:border-slate-800 p-2 hover:bg-slate-50 dark:hover:bg-slate-800">PDF Chat</a>
+      <a href="/pages" class="rounded-lg border border-slate-200 dark:border-slate-800 p-2 hover:bg-slate-50 dark:hover:bg-slate-800">Sayfa Yönetimi</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="mt-16">
+  <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Özellikler</h2>
+  <p class="text-slate-600 dark:text-slate-400 mt-1">En sık kullandığınız PDF işlemleri tek ekranda.</p>
+
+  <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Card 1 -->
+    <a href="/merge" class="card hover-float reveal" data-shortcut="B">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 3H6a2 2 0 00-2 2v2m12-4h2a2 2 0 012 2v2M4 15v2a2 2 0 002 2h2m12-4v2a2 2 0 01-2 2h-2M8 12h8M8 8h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="flex items-center justify-between mt-2">
+        <h3>Birleştir</h3>
+        <kbd class="kbd">B</kbd>
+      </div>
+      <p>Dosyaları sıraya diz, kopyaları ayıkla, meta veriyi koru.</p>
+    </a>
+    <!-- Card 2 -->
+    <a href="/split" class="card hover-float reveal" data-shortcut="Ö">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="flex items-center justify-between mt-2">
+        <h3>Böl</h3>
+        <kbd class="kbd">Ö</kbd>
+      </div>
+      <p>Aralıklara göre ayır; tek PDF veya ZIP halinde indir.</p>
+    </a>
+    <!-- Card 3 -->
+    <a href="/pdf_to_image" class="card hover-float reveal" data-shortcut="P">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 16l4-4 4 4 4-4 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="flex items-center justify-between mt-2">
+        <h3>PDF → Görsel</h3>
+        <kbd class="kbd">P</kbd>
+      </div>
+      <p>DPI ve format seç; sadece istediğin sayfaları dönüştür.</p>
+    </a>
+    <!-- Card 4 -->
+    <a href="/image_to_pdf" class="card hover-float reveal" data-shortcut="G">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="flex items-center justify-between mt-2">
+        <h3>Görsel → PDF</h3>
+        <kbd class="kbd">G</kbd>
+      </div>
+      <p>Sıra düzenle, sayfa boyutu/kenar boşluğu/fit modunu seç.</p>
+    </a>
+    <!-- Card 5 -->
+    <a href="/pdf_chat" class="card hover-float reveal" data-shortcut="Ç">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a4 4 0 01-4 4H9l-4 4v-4a4 4 0 01-4-4V7a4 4 0 014-4h12a4 4 0 014 4v8z" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="flex items-center justify-between mt-2">
+        <h3>PDF Chat</h3>
+        <kbd class="kbd">Ç</kbd>
+      </div>
+      <p>Özet + sayfa önizlemeleri; kaynak sayfalarla birlikte.</p>
+    </a>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="mt-16">
+  <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">3 Adımda İşlem</h2>
+  <div class="mt-6 grid md:grid-cols-3 gap-4">
+    <div class="step hover-float reveal glass-step">
+      <div class="step-number">1</div>
+      <h4>Dosyanı Yükle</h4>
+      <p>Güvenli yükleme; dosyaların izole klasörde saklanır.</p>
+    </div>
+    <div class="step hover-float reveal glass-step">
+      <div class="step-number">2</div>
+      <h4>İşlemi Seç</h4>
+      <p>Birleştir, böl, dönüştür veya Chat ile soru sor.</p>
+    </div>
+    <div class="step hover-float reveal glass-step">
+      <div class="step-number">3</div>
+      <h4>İndir</h4>
+      <p>Sonucu tek tıkla indir ve paylaş.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FLOATING QUICK ACTIONS (Glass) -->
+<div class="fixed bottom-6 right-6 z-40">
+  <div class="glass rounded-2xl shadow-xl p-2 flex gap-2 items-center">
+    <a href="/merge" class="qa" title="Birleştir (B)">
+      <span>⇄</span>
+    </a>
+    <a href="/split" class="qa" title="Böl (Ö)">
+      <span>∣∣</span>
+    </a>
+    <a href="/pdf_to_image" class="qa" title="PDF→Görsel (P)">
+      <span>⤓</span>
+    </a>
+    <a href="/image_to_pdf" class="qa" title="Görsel→PDF (G)">
+      <span>⤒</span>
+    </a>
+    <a href="/pdf_chat" class="qa" title="PDF Chat (Ç)">
+      <span>?</span>
+    </a>
+  </div>
+</div>
+
+
+<!-- FLOATING CONTACT (Glass, icons + short text) -->
+<div class="fixed right-6 bottom-28 z-50">
+  <div class="glass rounded-2xl px-3 py-2 shadow-lg flex items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
+    <a href="tel:05458078395" class="flex items-center gap-1 hover:opacity-90" title="Telefon">
+      <span>📞</span><span class="hidden sm:inline">Ara</span>
+    </a>
+    <span class="text-slate-400">·</span>
+    <a href="https://wa.me/905458078395" target="_blank" class="flex items-center gap-1 hover:opacity-90" title="WhatsApp">
+      <span>💬</span><span class="hidden sm:inline">WhatsApp</span>
+    </a>
+    <span class="text-slate-400">·</span>
+    <a href="mailto:perveraka@gmail.com" class="flex items-center gap-1 hover:opacity-90" title="E‑posta">
+      <span>✉️</span><span class="hidden sm:inline">E‑posta</span>
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER (unchanged by this patch) -->
+<footer class="mt-16 border-t border-slate-200 py-6 text-sm text-slate-500">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+    <div>© 2025 PerDF. Perwer AKA tarafından geliştirilmiştir. Tüm hakları saklıdır.</div>
+    <div class="flex items-center gap-3">
+    </div>
+  </div>
+</footer>
+
+<style>
+  .card { border-radius:1rem; border:1px solid rgb(226,232,240); background:rgba(255,255,255,.75); backdrop-filter:blur(10px); padding:1rem; transition:transform .2s ease, box-shadow .2s ease; }
+  .dark .card { border-color: rgba(255,255,255,.12); background: rgba(15,23,42,.55); }
+  .hover-float:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(2,6,23,.12); }
+  .card .icon { width:40px;height:40px;color:rgb(71,85,105); }
+  .dark .card .icon { color:rgb(203,213,225); }
+  .card h3 { font-size:1.125rem; font-weight:700; color:rgb(30,41,59); }
+  .dark .card h3 { color:rgb(226,232,240); }
+  .card p { color:rgb(71,85,105); font-size:.9rem; margin-top:.25rem; }
+  .dark .card p { color:rgb(148,163,184); }
+  .step { border-radius:1rem; border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.55); backdrop-filter: blur(14px); padding:1.25rem; }
+  .dark .step { border-color:rgba(255,255,255,.12); background:rgba(15,23,42,.45); }
+  .glass-step { position:relative; }
+  .glass-step::after{ content:''; position:absolute; inset:-1px; border-radius:inherit; border:1px solid rgba(255,255,255,.35); pointer-events:none; }
+  .step-number { width:2rem; height:2rem; border-radius:999px; background:#0f172a; color:#fff; display:flex; align-items:center; justify-content:center; font-size:.9rem; font-weight:700; }
+  .kbd{ font-size:.75rem; padding:.15rem .4rem; border-radius:.4rem; border:1px solid rgba(100,116,139,.35); color:rgb(71,85,105); }
+  .dark .kbd{ color:rgb(203,213,225); border-color:rgba(255,255,255,.2) }
+  /* reveal on-scroll */
+  .reveal{ opacity:0; transform: translateY(10px); }
+  .reveal.show{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease; }
+  /* quick actions */
+  .qa{ display:grid; place-items:center; width:42px; height:42px; border-radius:12px; border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.6); }
+  .qa:hover{ transform: translateY(-2px); box-shadow: 0 10px 24px rgba(2,6,23,.2); }
+  .dark .qa{ border-color: rgba(255,255,255,.12); background: rgba(15,23,42,.55); color: rgb(226,232,240); }
+</style>
+
+<!-- inline scripts: shortcuts + reveal -->
+<script>
+// Keyboard shortcuts (B, Ö, P, G, Ç)
+(function(){
+  const map = {
+    'b':'/merge',
+    'ö':'/split', 'ö':'/split', // normalize Ö
+    'p':'/pdf_to_image',
+    'g':'/image_to_pdf',
+    'ç':'/pdf_chat', 'ç':'/pdf_chat' // Ç
+  };
+  window.addEventListener('keydown', (e)=>{
+    if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
+    const k = (e.key || '').toLowerCase();
+    if(map[k]){ window.location.href = map[k]; }
+  });
+})();
+
+// Scroll reveal
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('show'); io.unobserve(en.target); } });
+  }, {threshold: 0.08});
+  els.forEach(el=> io.observe(el));
+})();
+</script>
+{% endblock %}

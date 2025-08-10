@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}PDF → Görsel – PerDF{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-200">PDF → Görsel</h1>
+  <p class="text-slate-600 dark:text-slate-400 dark:text-slate-400 mt-2">Seçili sayfaları PNG veya JPG olarak indir.</p>
+  <form id="p2iForm" action="/pdf_to_image" method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+    <div id="dropzone-p2i" class="dropzone">
+      <input class="sr-only" type="file" id="pdfp2i" name="pdf" accept="application/pdf" required />
+      <div class="text-center">
+        <p class="text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">PDF’i sürükleyin veya tıklayın</p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-3">
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Sayfa aralığı</span>
+        <input name="ranges" class="mt-1 w-full rounded-xl border border-slate-300 p-2" placeholder="örn: 1-3,5 (boş: tümü)" />
+      </label>
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">DPI</span>
+        <select name="dpi" class="mt-1 w-full rounded-xl border border-slate-300 p-2">
+          <option value="100">100</option>
+          <option value="150">150</option>
+          <option value="200" selected>200</option>
+          <option value="300">300</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Format</span>
+        <select name="fmt" class="mt-1 w-full rounded-xl border border-slate-300 p-2">
+          <option value="png" selected>PNG</option>
+          <option value="jpg">JPG</option>
+        </select>
+      </label>
+    </div>
+
+    <button class="primary mt-2 w-full" type="submit">Dönüştür</button>
+    <div id="progress-p2i" class="progress hidden"></div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}PDF Böl – PerDF{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-200">PDF Böl</h1>
+  <p class="text-slate-600 dark:text-slate-400 dark:text-slate-400 mt-2">Sayfa aralığı belirleyin; ayrı ayrı PDF'ler veya tek bir PDF olarak indirin.</p>
+
+  <form id="splitForm" action="/split" method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+    <div id="dropzone-split" class="dropzone">
+      <input class="sr-only" type="file" id="pdf" name="pdf" accept="application/pdf" required />
+      <div class="text-center">
+        <p class="text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">PDF’i sürükleyin veya tıklayın</p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-3">
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Sayfa aralığı</span>
+        <input name="ranges" class="mt-1 w-full rounded-xl border border-slate-300 p-2" placeholder="örn: 1-3,7,10-12 (boş bırak: tümü)" />
+      </label>
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Çıktı adı şablonu</span>
+        <input name="pattern" class="mt-1 w-full rounded-xl border border-slate-300 p-2" placeholder="page_{n}.pdf" value="page_{n}.pdf" />
+        <span class="text-xs text-slate-500">Ayrı PDF modunda kullanılır. {n} → sayfa numarası.</span>
+      </label>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-3">
+      <label class="flex items-center gap-2"><input type="radio" name="mode" value="zip" checked> <span>Ayrı PDF'ler (ZIP)</span></label>
+      <label class="flex items-center gap-2"><input type="radio" name="mode" value="single"> <span>Seçili sayfalar tek PDF</span></label>
+    </div>
+
+    <button class="primary mt-2 w-full" type="submit">Böl</button>
+    <div id="progress-split" class="progress hidden"></div>
+  </form>
+</div>
+{% endblock %}

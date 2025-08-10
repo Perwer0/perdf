@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}PDF Q&A – PerDF{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-200">PDF Q&A</h1>
+  <p class="text-slate-600 dark:text-slate-400 dark:text-slate-400 mt-2">PDF yükleyin, sorunuzu yazın; özet ve sayfa önizlemeleriyle yanıt alın.</p>
+
+  {% if not pdf_uploaded %}
+  <form action="/upload_pdf_chat" method="post" enctype="multipart/form-data" class="mt-6">
+    <div id="dropzone-chat" class="dropzone">
+      <input class="sr-only" type="file" id="pdfchat" name="pdf_file" accept="application/pdf" />
+      <div class="text-center">
+        <p class="text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">PDF’i sürükleyin veya tıklayın</p>
+      </div>
+    </div>
+    <button class="primary mt-4 w-full" type="submit">Yükle</button>
+  </form>
+  {% else %}
+  <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 mt-6">
+    <p class="text-slate-700 dark:text-slate-300 dark:text-slate-300">Dosya: <span class="font-medium">{{ filename }}</span></p>
+  </div>
+  <form action="/ask_pdf_question" method="post" class="mt-4 space-y-3">
+    <input type="hidden" name="filename" value="{{ filename }}" />
+    <textarea name="question" class="w-full rounded-xl border border-slate-300 p-3 focus:outline-none focus:ring-2 focus:ring-slate-300" rows="3" placeholder="Sorunuzu yazın...">{{ query or '' }}</textarea>
+    <button class="primary w-full" type="submit">Sor</button>
+  </form>
+
+  {% if qa %}
+  <div class="mt-6 space-y-4">
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+      <div class="text-sm text-slate-500 mb-1">🧠 {{ qa.mode }} tabanlı arama</div>
+      <h3 class="font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-200 mb-2">Kısa Özet</h3>
+      <p class="text-slate-700 dark:text-slate-300 dark:text-slate-300">{{ qa.summary }}</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4">
+      {% for r in qa.results %}
+      <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+        {% if r.preview %}
+        <a href="{{ url_for('uploads', filename=r.preview) }}" target="_blank">
+          <img src="{{ url_for('uploads', filename=r.preview) }}" class="w-full h-40 object-cover" alt="Önizleme sayfa {{ r.page }}" />
+        </a>
+        {% else %}
+        <div class="h-40 flex items-center justify-center text-slate-400">Önizleme yok</div>
+        {% endif %}
+        <div class="p-3">
+          <div class="text-xs text-slate-500 mb-1">Sayfa {{ r.page }}</div>
+          <div class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300">{{ r.snippet }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

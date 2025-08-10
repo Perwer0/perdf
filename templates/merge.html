@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}PDF Birleştir – PerDF{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-200">PDF Birleştir</h1>
+  <p class="text-slate-600 dark:text-slate-400 dark:text-slate-400 mt-2">PDF’leri sıraya dizin; kopyaları otomatik ayıklayın.</p>
+
+  <form id="mergeForm" action="/merge" method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+    <div id="dropzone-merge" class="dropzone">
+      <input class="sr-only" type="file" id="pdfs" name="pdfs" multiple accept="application/pdf" required />
+      <div class="text-center">
+        <p class="text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">PDF’leri buraya sürükleyin veya tıklayın</p>
+        <p class="text-slate-500 text-sm">Seçtikten sonra aşağıda sırayı düzenleyebilirsiniz</p>
+      </div>
+    </div>
+
+    <input type="hidden" name="order" id="merge-order" value=""/>
+
+    <div class="flex items-center gap-4">
+      <label class="flex items-center gap-2"><input type="checkbox" name="dedupe" value="1" checked> <span>Kopyaları ayıkla (hash)</span></label>
+      <label class="flex items-center gap-2"><input type="checkbox" name="sort_name" value="1"> <span>Ada göre sırala (A→Z)</span></label>
+    </div>
+    <p class="text-xs text-slate-500">Not: Elle sıralama yaptıysanız ada göre sıralama yok sayılır.</p>
+
+    <div id="filelist" class="space-y-2"></div>
+
+    <button class="primary mt-2 w-full" type="submit">Birleştir</button>
+    <div id="progress-merge" class="progress hidden"></div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Görsel → PDF – PerDF{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-200 dark:text-slate-200">Görsel → PDF</h1>
+  <p class="text-slate-600 dark:text-slate-400 dark:text-slate-400 mt-2">Görselleri sıraya dizin, sayfa boyutu ve yerleşimi seçin.</p>
+
+  <form id="i2pForm" action="/image_to_pdf" method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+    <div id="dropzone-i2p" class="dropzone">
+      <input class="sr-only" type="file" id="images" name="images" accept="image/*" multiple required />
+      <div class="text-center">
+        <p class="text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Görselleri sürükleyin veya tıklayın</p>
+        <p class="text-slate-500 text-sm">Seçtikten sonra aşağıda sırayı düzenleyebilirsiniz</p>
+      </div>
+    </div>
+
+    <input type="hidden" name="order" id="order" value=""/>
+
+    <div id="thumbs" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+
+    <div class="grid md:grid-cols-2 gap-3">
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Sayfa boyutu</span>
+        <select name="page_size" class="mt-1 w-full rounded-xl border border-slate-300 p-2">
+          <option value="auto" selected>Otomatik (görsel boyutuna göre)</option>
+          <option value="A4">A4</option>
+          <option value="Letter">Letter</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Yönlendirme</span>
+        <select name="orientation" class="mt-1 w-full rounded-xl border border-slate-300 p-2">
+          <option value="auto" selected>Otomatik</option>
+          <option value="portrait">Dikey</option>
+          <option value="landscape">Yatay</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-3">
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Kenar boşluğu (mm)</span>
+        <input name="margin_mm" type="number" min="0" step="1" value="10" class="mt-1 w-full rounded-xl border border-slate-300 p-2"/>
+      </label>
+      <label class="block">
+        <span class="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-300 font-medium">Yerleşim</span>
+        <select name="fit_mode" class="mt-1 w-full rounded-xl border border-slate-300 p-2">
+          <option value="contain" selected>Fit (taşmadan sığdır)</option>
+          <option value="cover">Cover (tam kapla, kırpabilir)</option>
+          <option value="stretch">Stretch (oranı koruma)</option>
+        </select>
+      </label>
+    </div>
+
+    <button class="primary mt-2 w-full" type="submit">Dönüştür</button>
+    <div id="progress-i2p" class="progress hidden"></div>
+  </form>
+</div>
+{% endblock %}
